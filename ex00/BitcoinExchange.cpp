@@ -6,7 +6,7 @@
 /*   By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:23:34 by yanzhao           #+#    #+#             */
-/*   Updated: 2026/07/05 22:53:45 by yanzhao          ###   ########.fr       */
+/*   Updated: 2026/07/04 17:48:52 by yanzhao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ bool    BitcoinExchange::_handleInputDataLine(const std::string &date, float val
     }
     else
     {
-        std::map<std::string, float>::const_iterator it = _originData.upper_bound(date);
+        std::map<std::string, float>::iterator it = _originData.upper_bound(date);
         if (it == _originData.begin())
         {
             std::cerr << "Error: bad input => " << line << std::endl;

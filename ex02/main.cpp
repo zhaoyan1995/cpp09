@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yanzhao <yanzhao@learner.42.tech>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:25:43 by yanzhao           #+#    #+#             */
-/*   Updated: 2026/07/06 00:02:50 by yanzhao          ###   ########.fr       */
+/*   Updated: 2026/07/04 17:25:45 by yanzhao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
         print_argv(argc, argv);
         pmergeMe.print_sorted_result();
         pmergeMe.print_sorting_time();
-        pmergeMe.print_cmp_nb();
+        //pmergeMe.print_cmp_nb();
     }
     catch(const std::exception& e)
     {

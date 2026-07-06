@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yanzhao <yanzhao@learner.42.tech>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:26:02 by yanzhao           #+#    #+#             */
-/*   Updated: 2026/07/06 00:06:03 by yanzhao          ###   ########.fr       */
+/*   Updated: 2026/07/04 17:26:03 by yanzhao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,16 +238,21 @@ std::vector<int> PmergeMe::_build_larger_vec(std::vector<std::pair<int, int> > &
 //Step 3 of Vector sorting (after recursive)
 void    PmergeMe::_merge_sort_vec(std::vector<int> &input ,std::vector<std::pair <int, int> > pairs, int odd_element)
 {
-    std::size_t index_to_insert;
+    std::size_t low;
+    std::size_t high;
 
     for (std::size_t i = 0; i < pairs.size(); i++)
-    { 
-        index_to_insert = _find_index_to_insert(input, pairs[i].second); 
+    {
+        low = 0;
+        high = input.size(); 
+        std::size_t index_to_insert = _binary_search_index(input, low, high, pairs[i].second, VECTOR);
         input.insert(input.begin() + index_to_insert, pairs[i].second);
     }
     if (odd_element > 0)
     {
-        index_to_insert = _find_index_to_insert(input, odd_element);
+        low = 0;
+        high = input.size();
+        std::size_t index_to_insert = _binary_search_index(input, low, high, odd_element, VECTOR);
         input.insert(input.begin() + index_to_insert, odd_element);
     }
 }
@@ -312,16 +317,21 @@ std::deque<int> PmergeMe::_build_larger_deque(std::deque<std::pair<int, int> >& 
 //Step 3 of Deque sorting (after recursive)
 void    PmergeMe::_merge_sort_deque(std::deque<int> &input, std::deque<std::pair<int, int> > pairs, int odd_element)
 {
-    std::size_t index_to_insert;
+    std::size_t low;
+    std::size_t high;
 
     for (std::size_t i = 0; i < pairs.size(); i++)
     {
-        index_to_insert = _find_index_to_insert(input, pairs[i].second);
+        low = 0;
+        high = input.size();
+        std::size_t index_to_insert = _binary_search_index(input, low, high, pairs[i].second, DEQUE);
         input.insert(input.begin() + index_to_insert, pairs[i].second);
     }
     if (odd_element != -1)
     {
-        index_to_insert = _find_index_to_insert(input, odd_element);
+        low = 0;
+        high = input.size();
+        std::size_t index_to_insert = _binary_search_index(input, low, high, odd_element, DEQUE);
         input.insert(input.begin() + index_to_insert, odd_element);
     }
 }

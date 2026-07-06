@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yanzhao <yanzhao@learner.42.tech>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:26:10 by yanzhao           #+#    #+#             */
-/*   Updated: 2026/07/06 00:04:56 by yanzhao          ###   ########.fr       */
+/*   Updated: 2026/07/04 17:26:11 by yanzhao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 #include <climits>
 #include <iterator>
 #include <iomanip>
-#include <algorithm>
 
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
@@ -78,32 +77,42 @@ class PmergeMe
         std::deque<int> _build_larger_deque(std::deque<std::pair<int, int> > &pairs);
         //DEQUE ALGO backtracking funct
         void    _merge_sort_deque(std::deque<int> &input, std::deque<std::pair<int, int> > pairs, int odd_element);
- 
+
         template <typename T>
-        std::size_t _find_index_to_insert(const T &input, int target)const;
+        std::size_t _binary_search_index(T &container, std::size_t low, std::size_t high, int target, int con_type);
 
         template <typename T>
         void      _print_container(const std::string &str, const T &container)const;
 
         template <typename V, typename U>
         void    _debug_recursive(const std::string &str, int depth, const V &input_con, const U &larger_con)const;
+
 };
 
 #endif
 
 template <typename T>
-std::size_t PmergeMe::_find_index_to_insert(const T &input, int target)const
+std::size_t    PmergeMe::_binary_search_index(T &container, std::size_t low, std::size_t high, int target, int con_type)
 {
-    std::size_t high_index;
+    std::size_t middle;
 
-    typename T::const_iterator it = std::upper_bound(input.begin(), input.end(), target);
-    if (it == input.begin())   
+    while (low < high)
     {
-        high_index = 0;
+       middle = low + (high - low) / 2; //avoid overflow issue due to addtion op!
+       if (target > container[middle])
+       {
+            low = middle + 1;
+       }
+       else
+       {
+            high = middle;
+       }
+       if (con_type == VECTOR)
+            _cmp_vec++;
+       else if (con_type == DEQUE)
+            _cmp_deque++;
     }
-    else 
-        high_index = static_cast<std::size_t>(it - input.begin());
-    return (high_index);
+    return (low);
 }
 
 template <typename T>
@@ -126,7 +135,7 @@ void PmergeMe::_debug_recursive(const std::string &str, int depth, const V &inpu
     std::cout << "input address  = " << &input_con << std::endl;
     std::cout << "larger address = " << &larger_con << std::endl;
 
-    _print_container("input : ", input_con);
-    _print_container("larger: ", larger_con);
+    _print_vector("input : ", input_con);
+    _print_vector("larger: ", larger_con);
     std::cout << "===========" << str << "===========" << std::endl;
 }
