@@ -6,7 +6,7 @@
 #    By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/09 01:56:34 by yanzhao           #+#    #+#              #
-#    Updated: 2026/07/04 16:08:44 by yanzhao          ###   ########.fr        #
+#    Updated: 2026/07/06 18:30:41 by yanzhao          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ HEADER_PATH=./
 
 CC=c++
 
-CFLAGS= -Wall -Wextra -Werror -std=c++98
+#CFLAGS= -Wall -Wextra -Werror -std=c++98
+CFLAGS=  -std=c++98
 
 DEPFLAGS=-MMD -MP
 

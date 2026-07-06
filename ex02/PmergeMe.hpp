@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yanzhao <yanzhao@learner.42.tech>          +#+  +:+       +#+        */
+/*   By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:26:10 by yanzhao           #+#    #+#             */
-/*   Updated: 2026/07/04 17:26:11 by yanzhao          ###   ########.fr       */
+/*   Updated: 2026/07/06 20:55:09 by yanzhao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <climits>
 #include <iterator>
 #include <iomanip>
+#include <algorithm>
 
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
@@ -45,6 +46,9 @@ class PmergeMe
         typedef std::pair<int, int> pair;
 
     private:
+        std::vector<std::size_t> _jacob_seq_vec;
+        std::deque<std::size_t> _jacob_seq_deq;
+
         std::vector<int> _raw_vec;
         std::deque<int> _raw_deque;
 
@@ -62,6 +66,9 @@ class PmergeMe
         bool    _is_digit_str(const std::string &str)const;
         int     _convert_to_int(const std::string &str, int con_type);
 
+        //BUILD JACOB SEQUENCE
+        void    _build_jacob_seq(int con_type);
+
         //VECTOR ALGO LOGIC
         void    _recursive_sort_vec(std::vector<int>& input, int depth);
         //VECTOR ALGO recursive funct
@@ -77,6 +84,9 @@ class PmergeMe
         std::deque<int> _build_larger_deque(std::deque<std::pair<int, int> > &pairs);
         //DEQUE ALGO backtracking funct
         void    _merge_sort_deque(std::deque<int> &input, std::deque<std::pair<int, int> > pairs, int odd_element);
+
+        template <typename T>
+        void _insert_element(T &container, int target , int con_type);
 
         template <typename T>
         std::size_t _binary_search_index(T &container, std::size_t low, std::size_t high, int target, int con_type);
@@ -116,6 +126,16 @@ std::size_t    PmergeMe::_binary_search_index(T &container, std::size_t low, std
 }
 
 template <typename T>
+void     PmergeMe::_insert_element(T &container, int target, int con_type)
+{
+    std::size_t low = 0;
+    std::size_t high = container.size();
+    std::size_t index_to_insert = _binary_search_index(container, low, high, target, con_type);
+
+    container.insert(container.begin() + index_to_insert, target);
+}
+
+template <typename T>
 void     PmergeMe::_print_container(const std::string &str, const T &container)const
 {
     if (!str.empty())
@@ -135,7 +155,7 @@ void PmergeMe::_debug_recursive(const std::string &str, int depth, const V &inpu
     std::cout << "input address  = " << &input_con << std::endl;
     std::cout << "larger address = " << &larger_con << std::endl;
 
-    _print_vector("input : ", input_con);
-    _print_vector("larger: ", larger_con);
+    _print_container("input : ", input_con);
+    _print_container("larger: ", larger_con);
     std::cout << "===========" << str << "===========" << std::endl;
 }
