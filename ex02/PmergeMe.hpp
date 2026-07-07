@@ -47,6 +47,7 @@ class PmergeMe
 
     private:
         std::vector<std::size_t> _jacob_seq_vec;
+        std::vector<std::size_t> _jacob_array;
         std::deque<std::size_t> _jacob_seq_deq;
 
         std::vector<int> _raw_vec;

@@ -110,14 +110,14 @@ void PmergeMe::print_sorted_result(void)const
     std::size_t i = _sorted_vec.size();
     std::size_t j = _sorted_deque.size();
 
-    //if (i != j)
-     //   throw std::runtime_error("Error: the size of vector is not equal to the size of deque!");
+    if (i != j)
+        throw std::runtime_error("Error: the size of vector is not equal to the size of deque!");
     for (std::size_t k = 0; k < i; k++) 
     {
-      //  if (_sorted_vec[k] != _sorted_deque[k])
-       //     throw std::runtime_error("Error: the sorted result is not the same between two different containers!");
-       // if (k < _sorted_vec.size() - 1 && _sorted_deque[k] > _sorted_deque[k + 1])
-    //         throw std::runtime_error("Error: the result has not been sorted correctly!");
+        if (_sorted_vec[k] != _sorted_deque[k])
+            throw std::runtime_error("Error: the sorted result is not the same between two different containers!");
+        if (k < _sorted_vec.size() - 1 && _sorted_deque[k] > _sorted_deque[k + 1])
+             throw std::runtime_error("Error: the result has not been sorted correctly!");
     }
     _print_container("After:  ", _sorted_vec);
     //_print_container("After:  ", _sorted_deque);
@@ -170,7 +170,19 @@ void PmergeMe::_build_jacob_seq(int con_type)
             j1 = j2;
             j2 = j3;
         }
-        _print_container("JACOB VEC: " , _jacob_seq_vec);
+//        _print_container("JACOB VEC: " , _jacob_seq_vec);
+
+        std::size_t last_jacob = _jacob_seq_vec[0];
+        _jacob_array.push_back(_jacob_seq_vec[0]);
+        for (std::size_t i = 0; i < _jacob_seq_vec.size(); i++)
+        {
+            for (std::size_t j = _jacob_seq_vec[i]; j > last_jacob ; j--)
+            {
+               _jacob_array.push_back(j);
+            }
+            last_jacob = _jacob_seq_vec[i];
+        }
+        //_print_container("JACOB ARRAY: " , _jacob_array);
     }
     else if (con_type == DEQUE) 
     {
@@ -278,82 +290,27 @@ std::vector<int> PmergeMe::_build_larger_vec(std::vector<std::pair<int, int> > &
 //Step 3 of Vector sorting (after recursive)
 void    PmergeMe::_merge_sort_vec(std::vector<int> &input ,std::vector<std::pair <int, int> > pairs, int odd_element)
 {
-    std::size_t pre_jacob;
-    std::size_t jacob;
-    std::size_t i;
+    if (pairs.size() < 1) 
+        return ;
 
     _insert_element(input, pairs[0].second, VECTOR);
-    pre_jacob = _jacob_seq_vec[0];
-    jacob = _jacob_seq_vec[1];
-    i = 1;
-   std:size_t threshold; 
-    std::vector<std::size_t>::const_iterator it = std::lower_bound(_jacob_seq_vec.begin(), _jacob_seq_vec.end(), pairs.size());
-    if (it != _jacob_seq_vec.end())
-        threshold = it - _jacob_seq_vec.begin();
-    else
-        threshold = _jacob_seq_vec.back();
 
+    std::size_t i = 1;
+    std::size_t insert_value = 1;
 
-//    std::cout << "it value = " << *it << std::endl;
-    std::cout << "threshold = " << threshold << std::endl;
-//    if (*it > pairs.size())
- //       --threshold;
- 
-    while (i <= threshold)
+    while (insert_value < pairs.size())
     {
-        while (jacob > pre_jacob)
+        std::size_t j = _jacob_array[i];
+        if (j <= pairs.size())
         {
-            _insert_element(input, pairs[jacob - 1].second, VECTOR);
-            jacob--;
+            _insert_element(input, pairs[j - 1].second, VECTOR);
+            insert_value++;
         }
-        pre_jacob = jacob; 
         i++;
-        if (i < _jacob_seq_vec.size())
-            jacob = _jacob_seq_vec[i];
-        else
-            break ;
     }
     if (odd_element > 0)
         _insert_element(input, odd_element, VECTOR);
 }
-
-//Step 3 of Vector sorting (after recursive)
-/*void    PmergeMe::_merge_sort_vec(std::vector<int> &input ,std::vector<std::pair <int, int> > pairs, int odd_element)
-{
-    std::size_t pre_jacob;
-    std::size_t jacob;
-    std::size_t i;
-
-    _insert_element(input, pairs[0].second, VECTOR);
-    pre_jacob = _jacob_seq_vec[0];
-    jacob = _jacob_seq_vec[1];
-    i = 0;
-   
-    std::vector<std::size_t>::const_iterator it = std::lower_bound(_jacob_seq_vec.begin(), _jacob_seq_vec.end(), pairs.size());
-    std::size_t threshold = *it - 1;
-
-    std::size_t k = jacob - 1;
-
-    while (k <= threshold)
-    {
-        while (k > pre_jacob - 1)
-        {
-            if (k < pairs.size())
-               _insert_element(input, pairs[k].second, VECTOR); 
-            k--;
-        }
-        pre_jacob = jacob;
-        i++;
-        if (i < _jacob_seq_vec.size())
-            jacob = _jacob_seq_vec[i];
-        else 
-            break ;
-        k = jacob - 1;
-    }
-    if (odd_element > 0)
-        _insert_element(input, odd_element, VECTOR);
-    
-}*/
 
 //Deque sorting logic
 void    PmergeMe::_recursive_sort_deque(std::deque<int> &input, int depth)
