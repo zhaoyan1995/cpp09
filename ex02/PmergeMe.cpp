@@ -298,7 +298,7 @@ void    PmergeMe::_merge_sort_vec(std::vector<int> &input ,std::vector<std::pair
     std::size_t i = 1;
     std::size_t insert_value = 1;
 
-    while (insert_value < pairs.size())
+    while (insert_value < pairs.size() && i < _jacob_array.size())
     {
         std::size_t j = _jacob_array[i];
         if (j <= pairs.size())
