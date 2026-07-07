@@ -74,9 +74,12 @@ class PmergeMe
         void    _recursive_sort_vec(std::vector<int>& input, int depth);
         //VECTOR ALGO recursive funct
         std::vector<std::pair<int, int> >    _build_pair_vector(std::vector<int>& input, int &odd_number);
-        std::vector<int> _build_larger_vec(std::vector<std::pair<int, int> > &pairs); 
+        std::vector<int> _build_larger_vec(std::vector<std::pair<int, int> > &pairs);
+
         //VECTOR ALGO backtracking funct 
-        void    _merge_sort_vec(std::vector<int> &input, std::vector<std::pair<int, int> > pairs, int odd_element); 
+        //Step 3 of Vector sorting (after recursive)
+        void    _merge_sort_vec(std::vector<int> &input ,std::vector<std::pair <int, int> > pairs, int odd_element);
+        std::size_t _find_high_thresold(int first, std::vector<int> input);
 
         //DEQUE ALGO LOGIC
         void    _recursive_sort_deque(std::deque<int>& input, int depth);
@@ -87,7 +90,7 @@ class PmergeMe
         void    _merge_sort_deque(std::deque<int> &input, std::deque<std::pair<int, int> > pairs, int odd_element);
 
         template <typename T>
-        void _insert_element(T &container, int target , int con_type);
+        void _insert_element(T &container, int second, int first, int con_type);
 
         template <typename T>
         std::size_t _binary_search_index(T &container, std::size_t low, std::size_t high, int target, int con_type);
@@ -97,7 +100,6 @@ class PmergeMe
 
         template <typename V, typename U>
         void    _debug_recursive(const std::string &str, int depth, const V &input_con, const U &larger_con)const;
-
 };
 
 #endif
@@ -127,13 +129,13 @@ std::size_t    PmergeMe::_binary_search_index(T &container, std::size_t low, std
 }
 
 template <typename T>
-void     PmergeMe::_insert_element(T &container, int target, int con_type)
+void     PmergeMe::_insert_element(T &container, int second, int high, int con_type)
 {
     std::size_t low = 0;
-    std::size_t high = container.size();
-    std::size_t index_to_insert = _binary_search_index(container, low, high, target, con_type);
 
-    container.insert(container.begin() + index_to_insert, target);
+    std::size_t index_to_insert = _binary_search_index(container, low, high, second, con_type);
+
+    container.insert(container.begin() + index_to_insert, second);
 }
 
 template <typename T>

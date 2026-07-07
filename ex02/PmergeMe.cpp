@@ -6,7 +6,7 @@
 /*   By: yanzhao <yanzhao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 17:26:02 by yanzhao           #+#    #+#             */
-/*   Updated: 2026/07/06 22:26:20 by yanzhao          ###   ########.fr       */
+/*   Updated: 2026/07/07 03:23:20 by yanzhao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void PmergeMe::print_sorted_result(void)const
         if (_sorted_vec[k] != _sorted_deque[k])
             throw std::runtime_error("Error: the sorted result is not the same between two different containers!");
         if (k < _sorted_vec.size() - 1 && _sorted_deque[k] > _sorted_deque[k + 1])
-             throw std::runtime_error("Error: the result has not been sorted correctly!");
+            throw std::runtime_error("Error: the result has not been sorted correctly!");
     }
     _print_container("After:  ", _sorted_vec);
     //_print_container("After:  ", _sorted_deque);
@@ -239,7 +239,6 @@ void    PmergeMe::_recursive_sort_vec(std::vector<int> &input, int depth)
         return ;
  
     std::vector<std::pair<int, int> > pairs = _build_pair_vector(input, odd_element);
-
     larger_vec = _build_larger_vec(pairs);
 
     //_debug_recursive("Recursive debug[VECTOR]: ", depth + 1, input, larger_vec);
@@ -290,10 +289,12 @@ std::vector<int> PmergeMe::_build_larger_vec(std::vector<std::pair<int, int> > &
 //Step 3 of Vector sorting (after recursive)
 void    PmergeMe::_merge_sort_vec(std::vector<int> &input ,std::vector<std::pair <int, int> > pairs, int odd_element)
 {
+    std::size_t high = input.size();
     if (pairs.size() < 1) 
         return ;
 
-    _insert_element(input, pairs[0].second, VECTOR);
+    high = _find_high_thresold(pairs[0].first, input);
+    _insert_element(input, pairs[0].second, high, VECTOR);
 
     std::size_t i = 1;
     std::size_t insert_value = 1;
@@ -303,13 +304,24 @@ void    PmergeMe::_merge_sort_vec(std::vector<int> &input ,std::vector<std::pair
         std::size_t j = _jacob_array[i];
         if (j <= pairs.size())
         {
-            _insert_element(input, pairs[j - 1].second, VECTOR);
+            high = _find_high_thresold(pairs[j - 1].first, input);
+            _insert_element(input, pairs[j - 1].second, high, VECTOR);
             insert_value++;
         }
         i++;
     }
     if (odd_element > 0)
-        _insert_element(input, odd_element, VECTOR);
+        _insert_element(input, odd_element, input.size(), VECTOR);
+}
+
+std::size_t PmergeMe::_find_high_thresold(int first, std::vector<int> input)
+{
+    for (std::size_t i = 0 ; i < input.size(); i++)
+    {
+        if (first == input[i])
+            return (i);
+    }
+    return (input.size());
 }
 
 //Deque sorting logic
@@ -324,9 +336,9 @@ void    PmergeMe::_recursive_sort_deque(std::deque<int> &input, int depth)
     std::deque<std::pair<int, int> > pairs = _build_pair_deque(input, odd_element);
     larger_deque = _build_larger_deque(pairs);
 
-    //_debug_recursive("Recursive debug[DEQUE]: ", depth + 1, input, larger_deque);
+//    _debug_recursive("Recursive debug[DEQUE]: ", depth + 1, input, larger_deque);
     _recursive_sort_deque(larger_deque, depth + 1);
-    //_debug_recursive("Recursive debug[DEQUE]: ", depth + 1, input, larger_deque);
+//    _debug_recursive("Backtracking debug[DEQUE]: ", depth + 1, input, larger_deque);
 
     _merge_sort_deque(larger_deque, pairs, odd_element);
 

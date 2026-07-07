@@ -49,7 +49,7 @@ int main(int argc, char **argv)
         print_argv(argc, argv);
         pmergeMe.print_sorted_result();
         pmergeMe.print_sorting_time();
-        //pmergeMe.print_cmp_nb();
+        pmergeMe.print_cmp_nb();
     }
     catch(const std::exception& e)
     {
